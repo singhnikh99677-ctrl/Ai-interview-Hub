@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Interview Hub</title>
+    <link rel="icon" href="icon.png" type="image/x-icon">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated gradient background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #1a1a2e, #16213e, #0f3460, #533483);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            z-index: -2;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Animated mesh background */
+        .mesh-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.4;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .orb1 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, #ff9900, transparent);
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .orb2 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, #e74c3c, transparent);
+            top: 50%;
+            right: 10%;
+            animation-delay: 5s;
+        }
+
+        .orb3 {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, #3498db, transparent);
+            bottom: 10%;
+            left: 30%;
+            animation-delay: 10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(100px, -100px) scale(1.1); }
+            66% { transform: translate(-100px, 100px) scale(0.9); }
+        }
+
+        /* Stars animation */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.5); }
+        }
+
+        /* Header */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 153, 0, 0.2);
+            padding: 25px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        header.scrolled {
+            padding: 15px 60px;
+            box-shadow: 0 10px 40px rgba(255, 153, 0, 0.3);
+        }
+
+        header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffd700, #ff9900, #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            animation: titleGlow 3s ease-in-out infinite;
+            text-shadow: 0 0 30px rgba(255, 153, 0, 0.5);
+        }
+
+        @keyframes titleGlow {
+            0%, 100% { 
+                filter: brightness(1) drop-shadow(0 0 20px rgba(255, 153, 0, 0.6));
+            }
+            50% { 
+                filter: brightness(1.3) drop-shadow(0 0 40px rgba(255, 153, 0, 0.9));
+            }
+        }
+
+        nav {
+            display: flex;
+            gap: 15px;
+        }
+
+        nav button {
+            font-size: 1.1rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #ff9900, #ff6b6b);
+            color: white;
+            padding: 14px 32px;
+            border: 2px solid transparent;
+            border-radius: 50px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 5px 25px rgba(255, 153, 0, 0.4);
+        }
+
+        nav button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        nav button:hover::before {
+            left: 100%;
+        }
+
+        nav button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(255, 153, 0, 0.6);
+            border-color: #ffd700;
+        }
+
+        nav button:active {
+            transform: translateY(-2px) scale(1.02);
+        }
+
+        /* Main content */
+        main {
+            padding: 80px 60px;
+            max-width: 1600px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+        }
+
+        section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            padding: 50px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 153, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+            transform: translateY(100px) rotateX(20deg);
+            animation: revealSection 0.8s ease forwards;
+        }
+
+        section:nth-child(1) { animation-delay: 0.1s; }
+        section:nth-child(2) { animation-delay: 0.2s; }
+        section:nth-child(3) { animation-delay: 0.3s; }
+        section:nth-child(4) { animation-delay: 0.4s; }
+        section:nth-child(5) { animation-delay: 0.5s; }
+
+        @keyframes revealSection {
+            to {
+                opacity: 1;
+                transform: translateY(0) rotateX(0);
+            }
+        }
+
+        /* Glowing border animation */
+        section::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #ff9900, #ff6b6b, #3498db, #9b59b6, #ff9900);
+            background-size: 400%;
+            border-radius: 30px;
+            z-index: -1;
+            opacity: 0;
+            animation: borderGlow 3s linear infinite;
+            transition: opacity 0.4s;
+        }
+
+        @keyframes borderGlow {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 400% 50%; }
+        }
+
+        section:hover::before {
+            opacity: 1;
+        }
+
+        /* Shine effect */
+        section::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            transform: scale(0);
+            transition: transform 0.6s;
+        }
+
+        section:hover::after {
+            transform: scale(1);
+        }
+
+        section:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 30px 80px rgba(255, 153, 0, 0.5);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        section h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #ffd700;
+            margin-bottom: 25px;
+            position: relative;
+            display: inline-block;
+        }
+
+        section h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #ff9900, #ff6b6b);
+            border-radius: 2px;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 10px #ff9900;
+        }
+
+        section:hover h1::after {
+            width: 100%;
+        }
+
+        section p {
+            font-size: 1.1rem;
+            line-height: 2;
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 15px;
+            text-align: justify;
+            transition: color 0.3s;
+        }
+
+        section:hover p {
+            color: rgba(255, 255, 255, 0.95);
+        }
+
+        section b {
+            color: #ff9900;
+            font-weight: 700;
+            text-shadow: 0 0 10px rgba(255, 153, 0, 0.5);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 60px;
+            background: rgba(10, 10, 10, 0.9);
+            border-top: 2px solid rgba(255, 153, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 153, 0, 0.2), transparent);
+            animation: footerShine 3s infinite;
+        }
+
+        @keyframes footerShine {
+            0% { left: -100%; }
+            100% { left: 200%; }
+        }
+
+        footer p {
+            font-size: 1.4rem;
+            font-weight: 400;
+            color: #ffd700;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 0 20px rgba(255, 153, 0, 0.8);
+        }
+
+        /* Scroll indicator */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #ff9900, #ff6b6b, #3498db);
+            z-index: 9999;
+            transition: width 0.1s;
+            box-shadow: 0 0 20px rgba(255, 153, 0, 0.8);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            main {
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 30px;
+                padding: 60px 40px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 20px;
+                padding: 20px 30px;
+            }
+
+            header h1 {
+                font-size: 2.2rem;
+            }
+
+            nav {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            nav button {
+                padding: 12px 24px;
+                font-size: 1rem;
+            }
+
+            main {
+                grid-template-columns: 1fr;
+                padding: 40px 20px;
+            }
+
+            section {
+                padding: 35px;
+            }
+
+            section h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Scroll progress -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+
+    <!-- Animated mesh background -->
+    <div class="mesh-background">
+        <div class="orb orb1"></div>
+        <div class="orb orb2"></div>
+        <div class="orb orb3"></div>
+    </div>
+
+    <!-- Stars -->
+    <div class="stars" id="stars"></div>
+
+    <header id="header">
+        <h1>AI Interview Hub</h1>
+        <nav>
+            <button onclick="window.location.href='index.html'">Home</button>
+            <button onclick="window.location.href='about.html'">About Us</button>
+            <button onclick="window.location.href='contact.html'">Contact Us</button>
+            <button onclick="window.location.href='login.html'">Get Started</button>
+        </nav>
+    </header>
+
+    <main>
+        <section>
+            <h1>About Us</h1>
+            <p>Welcome to <b>AI INTERVIEW HUB</b>, where cutting-edge technology meets personalized career development. We are dedicated to revolutionizing your interview preparation experience through advanced AI-powered mock interviews. Our commitment to excellence is driven by a singular passion for helping individuals like you succeed in the competitive job market.</p>
+        </section>
+
+        <section>
+            <h1>Our Story</h1>
+            <p>At <b>AI INTERVIEW HUB</b>, we recognize the hurdles and uncertainties that job seekers face in their quest for career advancement. The contemporary job market demands more than just technical expertise; it demands a strategic approach to interviews that goes beyond conventional preparation methods.</p>
+        </section>
+
+        <section>
+            <h1>The Challenge of Acing Interviews Today</h1>
+            <p>In the fast-paced and dynamic landscape of today's job market, acing interviews has become a formidable task. Employers are not only seeking technical proficiency but also evaluating soft skills, communication, and adaptability. The pressure to stand out among a sea of qualified candidates can be overwhelming, leading to missed opportunities and unfulfilled career aspirations.</p>
+        </section>
+
+        <section>
+            <h1>A Personal Journey of Motivation</h1>
+            <p>Motivated by the struggles that countless job seekers face, I embarked on a personal journey to develop a tool that would bridge the gap between traditional preparation methods and the contemporary demands of interviews. Having spent over 12 years as a seasoned software engineer and architect, I intimately understand the evolving needs of the industry and the significance of effective interview strategies.</p>
+        </section>
+
+        <section>
+            <h1>Why AI Interview Hub?</h1>
+            <p><b>Tailored Solutions:</b> AI INTERVIEW HUB isn't just a tool; it's a tailored solution born out of a deep understanding of the challenges faced by job seekers in today's market. Our AI-powered mock interviews are designed to address the multifaceted requirements of modern interviews.</p>
+            <p><b>Passion for Progress:</b> At the heart of AI INTERVIEW HUB is a passion for progress. We are not just facilitating mock interviews; we are fostering personal and professional growth. Our commitment is to empower you with the skills and confidence needed to excel in any interview scenario.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>✨ Thank you for choosing AI Interview Hub. Your success is our mission. ✨</p>
+    </footer>
+
+    <script>
+        // Create twinkling stars
+        const starsContainer = document.getElementById('stars');
+        for (let i = 0; i < 100; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 3 + 's';
+            star.style.animationDuration = (Math.random() * 2 + 2) + 's';
+            starsContainer.appendChild(star);
+        }
+
+        // Scroll progress bar
+        window.addEventListener('scroll', () => {
+            const scrollProgress = document.getElementById('scrollProgress');
+            const header = document.getElementById('header');
+            const scrollTop = window.pageYOffset;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercent = (scrollTop / docHeight) * 100;
+            
+            scrollProgress.style.width = scrollPercent + '%';
+            
+            if (scrollTop > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Parallax effect on sections
+        document.addEventListener('mousemove', (e) => {
+            const sections = document.querySelectorAll('section');
+            const x = e.clientX / window.innerWidth - 0.5;
+            const y = e.clientY / window.innerHeight - 0.5;
+            
+            sections.forEach((section, index) => {
+                const speed = (index + 1) * 0.5;
+                section.style.transform = `translateX(${x * speed * 10}px) translateY(${y * speed * 10}px)`;
+            });
+        });
+
+        // Reset transform on hover
+        document.querySelectorAll('section').forEach(section => {
+            section.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-15px) scale(1.02)';
+            });
+            
+            section.addEventListener('mouseleave', function() {
+                this.style.transform = '';
+            });
+        });
+    </script>
+</body>
+</html>
